@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Little World of Diya — Happy Birthday</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ivory: {
+              DEFAULT: '#FDFBF7',
+              paper: '#F5EFDF',
+              dark: '#EAE1CB',
+            },
+            blush: {
+              light: '#F8ECEB',
+              DEFAULT: '#F2D6D3',
+              deep: '#E8C5C1',
+            },
+            coffee: {
+              light: '#8C7B70',
+              DEFAULT: '#6B5B52',
+              dark: '#4A3B32',
+            },
+            burgundy: {
+              light: '#9E323F',
+              DEFAULT: '#7D2631',
+              dark: '#5C1D24',
+            }
+          },
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'Georgia', 'serif'],
+            body: ['Lora', 'Georgia', 'serif'],
+            handwriting: ['Caveat', 'cursive'],
+          },
+          boxShadow: {
+            'paper': '0 4px 20px -2px rgba(74, 59, 50, 0.08), 0 2px 6px -1px rgba(74, 59, 50, 0.04)',
+            'polaroid': '0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1)',
+            'vintage': '0 20px 30px -10px rgba(92, 29, 36, 0.12)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Paper Grain Texture Overlay */
+    .paper-texture {
+      background-color: #FDFBF7;
+      background-image: radial-gradient(#4A3B32 0.4px, transparent 0.4px), radial-gradient(#4A3B32 0.4px, #FDFBF7 0.4px);
+      background-size: 16px 16px;
+      background-position: 0 0, 8px 8px;
+      background-opacity: 0.02;
+    }
+
+    .paper-card {
+      background: linear-gradient(135deg, #FDFBF7 0%, #F5EFDF 100%);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FDFBF7;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #E8C5C1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #7D2631;
+    }
+
+    /* Hide scrollbar for carousel but keep functionality */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Reduced Motion */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto !important;
+      }
+      *, ::before, ::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-ivory text-coffee-dark font-body antialiased selection:bg-blush selection:text-burgundy-dark relative">
+
+  <!-- LOCAL IMAGES: Put files in assets/ (or next to this HTML). Use relative paths in src, e.g. assets/roses.jpeg
+       Hero (#roses): single <img> background src below.
+       Polaroids (#scrapbook): update each <img id="img-N"> src AND matching SCRAPBOOK_PHOTOS[N].src in <script> (keep both in sync for lightbox).
+       Passions carousel (#future): replace each card’s <img src="https://..."> with assets/your-file.jpeg
+       Tip: filename and extension must match exactly (.jpg vs .jpeg). Refresh with Cmd+Shift+R if an old image is cached. -->
+
+  <!-- ==================== TOP NAVIGATION HEADER ==================== -->
+  <header class="fixed top-0 left-0 right-0 z-40 bg-ivory/90 backdrop-blur-md border-b border-blush-deep/30 transition-all duration-300">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+      <!-- Title / Logo -->
+      <a href="#roses" class="font-serif text-xl sm:text-2xl font-semibold tracking-wide text-burgundy hover:text-burgundy-dark transition-colors flex items-center gap-2">
+        <span class="text-xs tracking-widest uppercase font-mono text-coffee-light hidden sm:inline">✦</span>
+        <span>A Little World of Diya</span>
+      </a>
+
+      <!-- Desktop & Mobile Nav Links + Audio Controls -->
+      <div class="flex items-center space-x-3 sm:space-x-6">
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-medium tracking-wide">
+          <a href="#roses" class="text-coffee hover:text-burgundy transition-colors">The Rose Garden</a>
+          <a href="#letter" class="text-coffee hover:text-burgundy transition-colors">A Letter</a>
+          <a href="#scrapbook" class="text-coffee hover:text-burgundy transition-colors">Little Things</a>
+          <a href="#future" class="text-coffee hover:text-burgundy transition-colors">Places & Passions</a>
+        </nav>
+
+        <!-- Audio Toggle Button -->
+        <button id="musicToggleBtn" 
+                onclick="toggleAudio()"
+                aria-label="Play instrumental music"
+                class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-blush-deep/60 bg-blush-light/50 hover:bg-blush/80 text-burgundy text-xs font-serif transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-burgundy/40">
+          <svg id="musicIconPlay" class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M8 5v14l11-7z"/>
+          </svg>
+          <svg id="musicIconPause" class="w-3.5 h-3.5 fill-current hidden" viewBox="0 0 24 24">
+            <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+          </svg>
+          <span id="musicStatusText" class="tracking-wide">Music</span>
+        </button>
+
+        <!-- Mobile Nav Menu Dropdown Button -->
+        <button id="mobileMenuBtn" 
+                onclick="toggleMobileMenu()"
+                aria-label="Toggle navigation menu"
+                class="md:hidden p-1.5 text-coffee hover:text-burgundy focus:outline-none">
+          <svg class="w-6 h-6 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-blush-deep/20 bg-ivory-paper px-6 py-4 space-y-3 font-serif text-base shadow-lg">
+      <a href="#roses" onclick="toggleMobileMenu()" class="block text-coffee hover:text-burgundy">1. The Rose Garden</a>
+      <a href="#letter" onclick="toggleMobileMenu()" class="block text-coffee hover:text-burgundy">2. A Letter for Her</a>
+      <a href="#scrapbook" onclick="toggleMobileMenu()" class="block text-coffee hover:text-burgundy">3. Little Things</a>
+      <a href="#future" onclick="toggleMobileMenu()" class="block text-coffee hover:text-burgundy">4. Places & Passions</a>
+    </div>
+  </header>
+
+  <!-- Hidden HTML5 Audio element fallback (optional custom audio URL can be inserted into src) -->
+  <audio id="bgAudio" loop preload="none">
+    <source src="" type="audio/mpeg">
+  </audio>
+
+
+  <!-- ==================== SECTION 01 — THE ROSE GARDEN ==================== -->
+  <section id="roses" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <!-- Background Image with Soft Translucent Dark Overlay -->
+    <div class="absolute inset-0 z-0">
+      <img src="assets/roses.jpeg" 
+           onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1000&auto=format&fit=crop'" 
+           alt="Deep red roses in bloom" 
+           class="w-full h-full object-cover object-center scale-105 transition-transform duration-1000">
+      <!-- Gradient overlay for text readability -->
+      <div class="absolute inset-0 bg-gradient-to-t from-burgundy-dark/80 via-black/45 to-black/30"></div>
+    </div>
+
+    <!-- Hero Content Overlay -->
+    <div class="relative z-10 max-w-4xl mx-auto px-6 text-center text-ivory space-y-6 md:space-y-8 my-auto py-12">
+      <div class="inline-block border-b border-blush/40 pb-2">
+        <span class="font-handwriting text-2xl sm:text-3xl text-blush tracking-wider">October 28</span>
+      </div>
+      
+      <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-normal tracking-tight leading-tight text-white drop-shadow-md">
+        Happy Birthday, Diya.
+      </h1>
+
+      <p class="font-serif italic text-lg sm:text-2xl text-ivory/90 max-w-2xl mx-auto font-light leading-relaxed drop-shadow">
+        “Let's go collect all the soft toys from the claw machine like we promised, Zuv.”
+      </p>
+
+      <div class="pt-6">
+        <a href="#letter" class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-ivory/15 hover:bg-ivory/25 backdrop-blur-md text-ivory border border-ivory/30 hover:border-ivory/60 transition-all duration-300 font-serif tracking-widest text-sm uppercase group">
+          <span>Come on in</span>
+          <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 text-ivory/60 text-xs font-serif tracking-widest flex flex-col items-center gap-1 animate-pulse">
+      <span>SCROLL</span>
+      <span>↓</span>
+    </div>
+  </section>
+
+
+  <!-- ==================== SECTION 02 — A LETTER FOR HER ==================== -->
+  <section id="letter" class="py-24 sm:py-32 px-4 sm:px-6 relative bg-ivory paper-texture">
+    <div class="max-w-3xl mx-auto">
+      
+      <!-- Vintage Paper Novel Page Container -->
+      <div class="paper-card p-8 sm:p-14 md:p-16 rounded-sm shadow-paper border border-coffee-light/20 relative overflow-hidden">
+        
+        <!-- Corner Decorative Accents -->
+        <div class="absolute top-4 left-4 w-6 h-6 border-t border-l border-burgundy/30"></div>
+        <div class="absolute top-4 right-4 w-6 h-6 border-t border-r border-burgundy/30"></div>
+        <div class="absolute bottom-4 left-4 w-6 h-6 border-b border-l border-burgundy/30"></div>
+        <div class="absolute bottom-4 right-4 w-6 h-6 border-b border-r border-burgundy/30"></div>
+
+        <!-- Botanical SVG Watermark / Header Illustration -->
+        <div class="flex justify-center mb-8 opacity-75">
+          <svg class="w-10 h-10 text-burgundy" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M12 2v20M12 4c-4 0-7 3-7 7s3 7 7 7 7-3 7-7-3-7-7-7zm0 0c2.5 0 4.5 2 4.5 4.5S14.5 13 12 13s-4.5-2-4.5-4.5S9.5 4 12 4z"/>
+          </svg>
+        </div>
+
+        <header class="text-center mb-10">
+          <h2 class="font-serif text-3xl sm:text-4xl text-burgundy font-normal tracking-wide">A Small Message for You, Ms. Mallick</h2>
+          <div class="w-16 h-px bg-burgundy/30 mx-auto mt-4"></div>
+        </header>
+
+        <!-- Birthday Message Prose Body -->
+        <article class="space-y-6 text-coffee-dark font-body text-base sm:text-lg leading-relaxed sm:leading-loose text-justify">
+          <p class="first-letter:font-serif first-letter:text-5xl first-letter:text-burgundy first-letter:float-left first-letter:mr-3 first-letter:leading-none">
+            Some people make the world a little more beautiful simply by being themselves. Today is a little reminder that the world is lucky to have you in it.
+          </p>
+
+          <p>
+            As you turn this page and step into another year, may you be greeted with quiet mornings, long cozy afternoons with your favourite stories, and moments that make you smile without even realizing it. You carry a unique warmth, and genuine kindness that brightens every room you walk into (always living upto your name eh...✨).
+          </p>
+
+          <p>
+            May this upcoming chapter bring you new adventures, unexpected discoveries, endless laughter, soft toy victories, and all the peaceful coffee breaks your heart desires. Never lose the wonder with which you look at the world, and remember to celebrate how wonderful you truly are (yes you very much so!)
+          </p>
+
+          <p class="font-serif italic text-burgundy font-medium text-center pt-4">
+            May you get all your wishes except one, so you'll have something to strive for. And may the saddest day of your future be no worse than the happiest day of your past.
+          </p>
+        </article>
+
+        <!-- Wax Seal / Vignette Decorative Accent -->
+        <div class="mt-12 flex justify-center items-center gap-3">
+          <div class="h-px bg-coffee-light/20 flex-1"></div>
+          <div class="w-10 h-10 rounded-full bg-burgundy/10 border border-burgundy/30 flex items-center justify-center text-burgundy font-handwriting text-xl">
+            🪔
+          </div>
+          <div class="h-px bg-coffee-light/20 flex-1"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==================== SECTION 03 — LITTLE THINGS THAT FEEL LIKE YOU ==================== -->
+  <section id="scrapbook" class="py-24 sm:py-32 px-4 sm:px-6 bg-blush-light/30 border-y border-blush-deep/20">
+    <div class="max-w-6xl mx-auto">
+      
+      <!-- Section Heading -->
+      <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+        <span class="font-handwriting text-2xl text-burgundy">Polaroids & Quiet Moments</span>
+        <h2 class="font-serif text-3xl sm:text-5xl text-burgundy-dark font-normal">Little Things That Feel Like You</h2>
+        <p class="text-coffee text-sm sm:text-base italic">Stories, Warm Cups, and Comforting Simplicity.</p>
+      </div>
+
+      <!-- Polaroid Scrapbook Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
+
+        <!-- Photo 1 -->
+        <div onclick="openLightbox(0)" 
+             class="group cursor-pointer bg-white p-4 pt-4 pb-8 rounded-sm shadow-polaroid transform -rotate-1 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 border border-ivory-dark/40">
+          <div class="aspect-[4/5] overflow-hidden bg-ivory-paper relative mb-4">
+            <img id="img-0" src="1000390618_95eb07.jpg" 
+                 onerror="this.src='https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop'" 
+                 alt="Coffee cup, open book, cookies, and journal still life" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter contrast-[0.97] sepia-[0.15]">
+            <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-serif tracking-widest uppercase bg-burgundy-dark/80 px-3 py-1.5 rounded-full">Expand ✦</span>
+            </div>
+          </div>
+          <p id="caption-0" class="font-handwriting text-xl text-center text-coffee-dark tracking-wide">
+            “A good book and a world to get lost in.”
+          </p>
+        </div>
+
+        <!-- Photo 2 -->
+        <div onclick="openLightbox(1)" 
+             class="group cursor-pointer bg-white p-4 pt-4 pb-8 rounded-sm shadow-polaroid transform rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 border border-ivory-dark/40">
+          <div class="aspect-[4/5] overflow-hidden bg-ivory-paper relative mb-4">
+            <img id="img-1" src="1000390617_95eb07.jpg" 
+                 onerror="this.src='https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop'" 
+                 alt="Close-up photograph of coffee beside an open novel" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter contrast-[0.97] sepia-[0.15]">
+            <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-serif tracking-widest uppercase bg-burgundy-dark/80 px-3 py-1.5 rounded-full">Expand ✦</span>
+            </div>
+          </div>
+          <p id="caption-1" class="font-handwriting text-xl text-center text-coffee-dark tracking-wide">
+            “Coffee, quiet moments, and the little things.”
+          </p>
+        </div>
+
+        <!-- Photo 3 -->
+        <div onclick="openLightbox(2)" 
+             class="group cursor-pointer bg-white p-4 pt-4 pb-8 rounded-sm shadow-polaroid transform -rotate-2 hover:rotate-0 hover:-translate-y-2 transition-all duration-300 border border-ivory-dark/40">
+          <div class="aspect-[4/5] overflow-hidden bg-ivory-paper relative mb-4">
+            <img id="img-2" src="1000390619_95eb07.jpg" 
+                 onerror="this.src='https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=800&auto=format&fit=crop'" 
+                 alt="Photograph of Diya reading at a café" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter contrast-[0.97] sepia-[0.15]">
+            <div class="absolute inset-0 bg-burgundy/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+              <span class="text-white text-xs font-serif tracking-widest uppercase bg-burgundy-dark/80 px-3 py-1.5 rounded-full">Expand ✦</span>
+            </div>
+          </div>
+          <p id="caption-2" class="font-handwriting text-xl text-center text-coffee-dark tracking-wide">
+            “Stories worth pausing for.”
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ==================== LIGHTBOX MODAL ==================== -->
+  <div id="lightboxModal" 
+       class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm hidden flex items-center justify-center p-4 sm:p-6 transition-opacity duration-300"
+       onclick="closeLightboxOnBackdrop(event)">
+    <div class="relative max-w-3xl w-full bg-ivory p-4 sm:p-6 rounded-sm shadow-2xl border border-blush-deep/30" onclick="event.stopPropagation()">
+      <!-- Close Button -->
+      <button onclick="closeLightbox()" 
+              aria-label="Close image lightbox"
+              class="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 bg-burgundy text-ivory rounded-full p-2 hover:bg-burgundy-dark shadow-md transition-colors focus:outline-none">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <!-- Lightbox Image -->
+      <div class="max-h-[75vh] overflow-hidden rounded-sm bg-black/5 flex items-center justify-center">
+        <img id="lightboxImg" src="" alt="" class="max-h-[75vh] w-auto object-contain">
+      </div>
+
+      <!-- Lightbox Caption -->
+      <p id="lightboxCaption" class="mt-4 font-handwriting text-2xl text-center text-coffee-dark"></p>
+    </div>
+  </div>
+
+
+  <!-- ==================== SECTION 04 — THE THINGS YOU LOVE & PLACES YET TO GO ==================== -->
+  <section id="future" class="py-24 sm:py-32 px-4 sm:px-6 bg-ivory paper-texture">
+    <div class="max-w-6xl mx-auto space-y-24">
+      
+      <!-- PART A: CAROUSEL OF PASSIONS & AESTHETICS -->
+      <div class="space-y-8">
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+          <span class="font-handwriting text-2xl text-burgundy">Passions & Aesthetics</span>
+          <h2 class="font-serif text-3xl sm:text-5xl text-burgundy-dark font-normal">The Things You Love</h2>
+          <p class="text-coffee text-sm sm:text-base">A curated tapestry of favourite elements, flowers, flavours, and moods.</p>
+        </div>
+
+        <!-- Carousel Wrapper -->
+        <div class="relative group max-w-5xl mx-auto">
+          <!-- Previous Button -->
+          <button onclick="scrollCarousel(-1)" 
+                  aria-label="Previous slide"
+                  class="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-ivory/90 hover:bg-white text-burgundy p-3 rounded-full shadow-md border border-blush-deep/30 focus:outline-none transition-all hidden sm:flex">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+          </button>
+
+          <!-- Carousel Container -->
+          <div id="carouselContainer" class="flex gap-6 overflow-x-auto snap-x snap-mandatory no-scrollbar py-4 px-2">
+            
+            <!-- Card 1: Books -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/Library.jpeg" alt="Books" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Books & Fictional Worlds</h3>
+              <p class="text-coffee-light text-sm mt-1">Escaping into well-worn pages and timeless stories.</p>
+            </div>
+
+            <!-- Card 2: Coffee -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/cafe_cb.jpeg" alt="Coffee" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Coffee & Cafés</h3>
+              <p class="text-coffee-light text-sm mt-1">Warm cups, fragrant espresso, and corner tables.</p>
+            </div>
+
+            <!-- Card 3: Flowers -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/lily.jpeg" alt="Lilies and Gerberas" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Lilies & Gerberas</h3>
+              <p class="text-coffee-light text-sm mt-1">Understanding flowers and their meanings.</p>
+            </div>
+
+            <!-- Card 4: Food Treats -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?q=80&w=600&auto=format&fit=crop" alt="Ice Cream and Fries" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Ice Cream & Peri-Peri Fries</h3>
+              <p class="text-coffee-light text-sm mt-1">Perfect balance of sweet scoops and spicy cravings (no dipping fries).</p>
+            </div>
+
+            <!-- Card 5: Cars & Bikes -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/aston-martin-vanquish-S.jpeg" alt="Cars and Bikes" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Aston Martin Vanquish S</h3>
+              <p class="text-coffee-light text-sm mt-1">The quiet thrill of open roads and sleek engines.</p>
+            </div>
+
+            <!-- Card 6: Snowy Destinations -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/mountains.jpeg" alt="Snowy Destinations" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Snowy Destinations</h3>
+              <p class="text-coffee-light text-sm mt-1">Crisp mountain air, falling snow, and heavy coats.</p>
+            </div>
+
+            <!-- Card 7: Travel -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/travel.jpeg" alt="Travel" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Another one like North Sikkim</h3>
+              <p class="text-coffee-light text-sm mt-1">Wandering through unfamiliar streets with fresh curiosity.</p>
+            </div>
+
+            <!-- Card 8: Dark Romance -->
+            <div class="snap-center shrink-0 w-64 sm:w-72 paper-card p-5 rounded-sm border border-blush-deep/30 shadow-paper hover:-translate-y-1 transition-transform">
+              <div class="h-44 rounded-sm overflow-hidden mb-4 bg-blush-light">
+                <img src="assets/dromance.jpeg" alt="Dark Romance Mood" class="w-full h-full object-cover">
+              </div>
+              <h3 class="font-serif text-xl text-burgundy font-semibold">Dark Romance Aesthetics</h3>
+              <p class="text-coffee-light text-sm mt-1">Gothic architecture, candlelight, and mysteries.</p>
+            </div>
+
+          </div>
+
+          <!-- Next Button -->
+          <button onclick="scrollCarousel(1)" 
+                  aria-label="Next slide"
+                  class="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-ivory/90 hover:bg-white text-burgundy p-3 rounded-full shadow-md border border-blush-deep/30 focus:outline-none transition-all hidden sm:flex">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+
+      <!-- PART B: FUTURE EXPERIENCES WISHLIST -->
+      <div class="space-y-10 max-w-4xl mx-auto pt-8">
+        <div class="text-center space-y-2">
+          <span class="font-handwriting text-2xl text-burgundy">Unwritten Pages</span>
+          <h2 class="font-serif text-3xl sm:text-4xl text-burgundy-dark font-normal">Places & Moments Yet To Come</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <div class="flex items-start gap-4 p-5 rounded-sm bg-blush-light/30 border border-blush-deep/20">
+            <span class="font-serif text-2xl text-burgundy font-light">01</span>
+            <div>
+              <h4 class="font-serif text-lg font-semibold text-coffee-dark">Finding a new favourite book somewhere unexpected</h4>
+              <p class="text-coffee text-sm mt-1 leading-relaxed">Stumbling across a rare edition in an old antique shop that stays with you forever.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-5 rounded-sm bg-blush-light/30 border border-blush-deep/20">
+            <span class="font-serif text-2xl text-burgundy font-light">02</span>
+            <div>
+              <h4 class="font-serif text-lg font-semibold text-coffee-dark">Scenic road trips with beautiful views</h4>
+              <p class="text-coffee text-sm mt-1 leading-relaxed">Winding paths through misty hills, great music playlists, and apna khud ka gaadi.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-5 rounded-sm bg-blush-light/30 border border-blush-deep/20">
+            <span class="font-serif text-2xl text-burgundy font-light">03</span>
+            <div>
+              <h4 class="font-serif text-lg font-semibold text-coffee-dark">A snowy getaway and warm drinks</h4>
+              <p class="text-coffee text-sm mt-1 leading-relaxed">Watching snowflakes fall outside a wooden cabin while holding a hot mug.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-5 rounded-sm bg-blush-light/30 border border-blush-deep/20">
+            <span class="font-serif text-2xl text-burgundy font-light">04</span>
+            <div>
+              <h4 class="font-serif text-lg font-semibold text-coffee-dark">Exploring a new city, one café at a time</h4>
+              <p class="text-coffee text-sm mt-1 leading-relaxed">Getting delightfully lost in cobblestone alleys and finding hidden spots. Fulfilling every pinterest board checklist.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4 p-5 rounded-sm bg-blush-light/30 border border-blush-deep/20 md:col-span-2">
+            <span class="font-serif text-2xl text-burgundy font-light">05</span>
+            <div>
+              <h4 class="font-serif text-lg font-semibold text-coffee-dark">A cosy bookstore café on a mountain top</h4>
+              <p class="text-coffee text-sm mt-1 leading-relaxed">Browsing high shelves without any rush, accompanied by fresh pastry and coffee.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- FINAL BIRTHDAY SIGN-OFF CARD -->
+      <div class="pt-12">
+        <div class="paper-card max-w-2xl mx-auto p-8 sm:p-12 text-center rounded-sm shadow-vintage border border-blush-deep/40 space-y-6">
+          <div class="text-3xl">🪔</div>
+          <p class="font-serif text-xl sm:text-2xl text-burgundy leading-relaxed italic">
+            “May the chapters ahead bring you beautiful stories, wonderful places, little joys, and countless reasons to smile.”
+          </p>
+          <h3 class="font-serif text-2xl sm:text-3xl font-semibold text-burgundy-dark pt-2">
+            Happy Birthday, Diya.
+          </h3>
+          <div class="text-xs font-mono tracking-widest text-coffee-light uppercase">
+            October 28 • A Keepsake World for Nivedita
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="py-8 bg-ivory-dark/40 border-t border-blush-deep/20 text-center font-serif text-sm text-coffee">
+    <p>A Little World of Sitharaman Ji — Created with love & care 🐦‍🔥</p>
+  </footer>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    /* =========================================================
+       1. EDITABLE SCRAPBOOK PHOTO DATA CONFIGURATION
+       (Must match <img id="img-N"> src in the scrapbook section above.)
+       ========================================================= */
+    const SCRAPBOOK_PHOTOS = [
+      {
+        src: '1000390618_95eb07.jpg',
+        fallback: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop',
+        caption: '“A good book and a world to get lost in.”',
+        alt: 'Coffee cup, open book, cookies, and journal still life'
+      },
+      {
+        src: '1000390617_95eb07.jpg',
+        fallback: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=800&auto=format&fit=crop',
+        caption: '“Coffee, quiet moments, and the little things.”',
+        alt: 'Close-up photograph of coffee beside an open novel'
+      },
+      {
+        src: '1000390619_95eb07.jpg',
+        fallback: 'https://images.unsplash.com/photo-1495446815901-a7297e633e8d?q=80&w=800&auto=format&fit=crop',
+        caption: '“A story worth pausing for.”',
+        alt: 'Photograph of Diya reading at a café'
+      }
+    ];
+
+    /* =========================================================
+       2. LIGHTBOX MODAL FUNCTIONALITY
+       ========================================================= */
+    function openLightbox(index) {
+      const modal = document.getElementById('lightboxModal');
+      const img = document.getElementById('lightboxImg');
+      const caption = document.getElementById('lightboxCaption');
+
+      const photo = SCRAPBOOK_PHOTOS[index];
+      if (!photo) return;
+
+      img.src = photo.src;
+      img.alt = photo.alt;
+      img.onerror = function() {
+        this.src = photo.fallback;
+      };
+      caption.textContent = photo.caption;
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const modal = document.getElementById('lightboxModal');
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function closeLightboxOnBackdrop(event) {
+      if (event.target.id === 'lightboxModal') {
+        closeLightbox();
+      }
+    }
+
+    // Keyboard ESC key listener for lightbox
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeLightbox();
+      }
+    });
+
+
+    /* =========================================================
+       3. CAROUSEL SCROLLING FUNCTIONALITY
+       ========================================================= */
+    function scrollCarousel(direction) {
+      const container = document.getElementById('carouselContainer');
+      const scrollAmount = 300;
+      container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+
+
+    /* =========================================================
+       4. MOBILE MENU TOGGLE
+       ========================================================= */
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobileMenu');
+      menu.classList.toggle('hidden');
+    }
+
+
+    /* =========================================================
+       5. AUDIO PLAYER & WEB AUDIO SYNTH fallback
+       ========================================================= */
+    let isPlaying = false;
+    let audioCtx = null;
+    let synthOsc = null;
+    let synthGain = null;
+    let synthInterval = null;
+
+    function toggleAudio() {
+      const audio = document.getElementById('bgAudio');
+      const playIcon = document.getElementById('musicIconPlay');
+      const pauseIcon = document.getElementById('musicIconPause');
+      const statusText = document.getElementById('musicStatusText');
+      const btn = document.getElementById('musicToggleBtn');
+
+      if (!isPlaying) {
+        // Attempt playing audio element if source exists
+        if (audio.src && audio.src !== window.location.href) {
+          audio.play().then(() => {
+            updateAudioUI(true);
+          }).catch(err => {
+            console.log('Audio file playback prevented, falling back to Web Audio ambient synth');
+            startAmbientSynth();
+            updateAudioUI(true);
+          });
+        } else {
+          // Play Web Audio Ambient Arpeggio Fallback
+          startAmbientSynth();
+          updateAudioUI(true);
+        }
+      } else {
+        // Stop audio
+        if (audio.src) audio.pause();
+        stopAmbientSynth();
+        updateAudioUI(false);
+      }
+    }
+
+    function updateAudioUI(playingState) {
+      isPlaying = playingState;
+      const playIcon = document.getElementById('musicIconPlay');
+      const pauseIcon = document.getElementById('musicIconPause');
+      const statusText = document.getElementById('musicStatusText');
+      const btn = document.getElementById('musicToggleBtn');
+
+      if (isPlaying) {
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+        statusText.textContent = 'Playing';
+        btn.setAttribute('aria-label', 'Pause instrumental music');
+        btn.classList.add('bg-blush', 'text-burgundy-dark');
+      } else {
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+        statusText.textContent = 'Music';
+        btn.setAttribute('aria-label', 'Play instrumental music');
+        btn.classList.remove('bg-blush', 'text-burgundy-dark');
+      }
+    }
+
+    // Soft Ambient Pentatonic Chords Synth using Web Audio API
+    function startAmbientSynth() {
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!audioCtx) {
+          audioCtx = new AudioContext();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+
+        const notes = [261.63, 329.63, 392.00, 440.00, 523.25]; // C, E, G, A, C (Warm soft notes)
+        let noteIdx = 0;
+
+        function playSoftNote() {
+          if (!isPlaying) return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtx.currentTime);
+
+          gain.gain.setValueAtTime(0, audioCtx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.04, audioCtx.currentTime + 1.5);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 4.5);
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+
+          osc.start();
+          osc.stop(audioCtx.currentTime + 4.5);
+
+          noteIdx = (noteIdx + 1) % notes.length;
+        }
+
+        playSoftNote();
+        synthInterval = setInterval(playSoftNote, 2500);
+      } catch (e) {
+        console.error('Web Audio not supported', e);
+      }
+    }
+
+    function stopAmbientSynth() {
+      if (synthInterval) {
+        clearInterval(synthInterval);
+        synthInterval = null;
+      }
+    }
+  </script>
+</body>
+</html>
